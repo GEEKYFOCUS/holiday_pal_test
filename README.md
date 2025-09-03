@@ -39,13 +39,6 @@ cp env.example .env
 
 Edit `.env` with your actual values:
 
-```env
-# Slack Configuration
-SLACK_BOT_TOKEN=
-SLACK_SIGNING_SECRET=
-# Calendarific API Configuration
-CALENDARIFIC_API_KEY=
-CALENDARIFIC_API_URL=
 
 # Bot Configuration
 BOT_NAME=Holiday Reminder Bot
