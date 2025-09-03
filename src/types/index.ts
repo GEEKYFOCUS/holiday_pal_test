@@ -47,14 +47,14 @@ export interface SlackMessage {
 }
 
 export interface ReminderSchedule {
-  countryCode: string;
+  countryCode?: string;
   channel: string;
   time: string;
   enabled: boolean;
 }
 
 export interface CountryHolidaySummaryItem {
-  countryFlag: string;
+  countryFlag?: string;
   countryCode: string;
   countryName: string;
   holidays: Holiday[];
