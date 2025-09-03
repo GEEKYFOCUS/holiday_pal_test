@@ -203,6 +203,7 @@
 
 
 import cron from 'node-cron';
+import { schedule, ScheduledTask } from 'node-cron';
 import { HolidayService } from './holiday-service';
 import { SlackService } from './slack-service';
 import { countryFlags, defaultConfig } from '../config/default-config';
@@ -211,7 +212,7 @@ import { Holiday, CountryHolidaySummaryItem } from '../types';
 export class ReminderService {
   private holidayService: HolidayService;
   private slackService: SlackService;
-  private cronJobs: cron.ScheduledTask[] = [];
+  private cronJobs: ScheduledTask[] = [];
 
   constructor(holidayService: HolidayService, slackService: SlackService) {
     this.holidayService = holidayService;
