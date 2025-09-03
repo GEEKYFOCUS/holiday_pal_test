@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Holiday Bot Admin Panel</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .country-card { transition: all 0.3s ease; }
+        .country-card:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .status-indicator { width: 12px; height: 12px; border-radius: 50%; display: inline-block; margin-right: 8px; }
+        .status-active { background-color: #10b981; }
+        .status-inactive { background-color: #ef4444; }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-gray-800 mb-2">
+                🎉 Holiday Bot Admin Panel
+            </h1>
+            <p class="text-gray-600">Manage your global holiday reminders and bot configuration</p>
+        </div>
+
+        <!-- Status Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-blue-100 text-blue-600">
+                        <i class="fas fa-flag text-xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Active Countries</p>
+                        <p class="text-2xl font-bold text-gray-900" id="activeCountries">0</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-green-100 text-green-600">
+                        <i class="fas fa-clock text-xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Reminder Time</p>
+                        <p class="text-2xl font-bold text-gray-900" id="reminderTime">09:00</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-purple-100 text-purple-600">
+                        <i class="fas fa-channels text-xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Total Channels</p>
+                        <p class="text-2xl font-bold text-gray-900" id="totalChannels">0</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Configuration Section -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Bot Configuration</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Reminder Time (UTC)</label>
+                    <input type="time" id="reminderTimeInput" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Default Channel</label>
+                    <input type="text" id="defaultChannelInput" placeholder="#general" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+            </div>
+            
+            <div class="mt-4">
+                <button onclick="saveConfig()" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors">
+                    <i class="fas fa-save mr-2"></i>Save Configuration
+                </button>
+            </div>
+        </div>
+
+        <!-- Countries Management -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">Countries & Channels</h2>
+                <button onclick="showAddCountryModal()" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors">
+                    <i class="fas fa-plus mr-2"></i>Add Country
+                </button>
+            </div>
+            
+            <div id="countriesList" class="space-y-4">
+                <!-- Countries will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Add Country Modal -->
+        <div id="addCountryModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden z-50">
+            <div class="flex items-center justify-center min-h-screen p-4">
+                <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
+                    <div class="px-6 py-4 border-b border-gray-200">
+                        <h3 class="text-lg font-medium text-gray-900">Add New Country</h3>
+                    </div>
+                    
+                    <div class="px-6 py-4">
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Country Code</label>
+                            <input type="text" id="newCountryCode" placeholder="US" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Country Name</label>
+                            <input type="text" id="newCountryName" placeholder="United States" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Channels (comma-separated)</label>
+                            <input type="text" id="newCountryChannels" placeholder="#general,#holidays" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Timezone</label>
+                            <select id="newCountryTimezone" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="UTC">UTC</option>
+                                <option value="America/New_York">America/New_York</option>
+                                <option value="Europe/London">Europe/London</option>
+                                <option value="Asia/Tokyo">Asia/Tokyo</option>
+                                <option value="Europe/Berlin">Europe/Berlin</option>
+                                <option value="Australia/Sydney">Australia/Sydney</option>
+                                <option value="America/Toronto">America/Toronto</option>
+                                <option value="Asia/Kolkata">Asia/Kolkata</option>
+                                <option value="America/Sao_Paulo">America/Sao_Paulo</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="px-6 py-4 border-t border-gray-200 flex justify-end space-x-3">
+                        <button onclick="hideAddCountryModal()" class="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 transition-colors">
+                            Cancel
+                        </button>
+                        <button onclick="addCountry()" class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors">
+                            Add Country
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Test Section -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Test & Debug</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Test Country</label>
+                    <select id="testCountry" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="">Select a country</option>
+                    </select>
+                </div>
+                
+                <div class="flex items-end">
+                    <button onclick="testHolidayAPI()" class="bg-yellow-600 text-white px-4 py-2 rounded-md hover:bg-yellow-700 transition-colors">
+                        <i class="fas fa-vial mr-2"></i>Test Holiday API
+                    </button>
+                </div>
+            </div>
+            
+            <div id="testResults" class="mt-4 p-4 bg-gray-100 rounded-md hidden">
+                <!-- Test results will appear here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
