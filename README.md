@@ -41,12 +41,11 @@ Edit `.env` with your actual values:
 
 ```env
 # Slack Configuration
-SLACK_BOT_TOKEN=xapp-1-A095AH65EUF-9306659901760-e74e277354f361e6a7a3997df1ac8afe88575b3d297e19b2a29c4f5c2a66cfa2
-SLACK_SIGNING_SECRET=db0842a67475ade063196f8e87ffc940
-
+SLACK_BOT_TOKEN=
+SLACK_SIGNING_SECRET=
 # Calendarific API Configuration
-CALENDARIFIC_API_KEY=7lkQgBMkbfj3LBxLT6ybHj0z42KH7jFi
-CALENDARIFIC_API_URL=https://calendarific.com/api/v2
+CALENDARIFIC_API_KEY=
+CALENDARIFIC_API_URL=
 
 # Bot Configuration
 BOT_NAME=Holiday Reminder Bot
