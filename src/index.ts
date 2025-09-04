@@ -22,8 +22,8 @@ class HolidayBot {
 
   async start(): Promise<void> {
     try {
-      console.log('🚀 Starting Holiday Reminder Bot...');
-
+      console.log('🚀 Starting Holiday Reminder Bot...')
+      
       // Validate environment variables
       this.validateEnvironment();
 
