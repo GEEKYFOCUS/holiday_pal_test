@@ -7,7 +7,7 @@
 // export class ReminderService {
 //   private holidayService: HolidayService;
 //   private slackService: SlackService;
-//   private cronJobs: cron.ScheduledTask[] = [];
+//   private cronJobs: cron.ScheduledTask[] = []
 
 //   constructor(holidayService: HolidayService, slackService: SlackService) {
 //     this.holidayService = holidayService;
@@ -373,3 +373,5 @@ export class ReminderService {
     return this.cronJobs;
   }
 }
+
+// added a new line
